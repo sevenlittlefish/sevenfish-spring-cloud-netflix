@@ -1,0 +1,22 @@
+server:
+  port: 8806
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka/
+  instance:
+    prefer-ip-address: true
+spring:
+  application:
+    name: provider-demo-service
+  zipkin:
+    base-url: http://127.0.0.1:9411
+  datasource:
+    master:
+      url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+      username: root
+      password: root
+    slave:
+      url: jdbc:mysql://127.0.0.1:3306/test_account?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+      username: root
+      password: root

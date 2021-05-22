@@ -1,0 +1,19 @@
+server:
+  port: 8816
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka/
+  instance:
+    prefer-ip-address: true
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      label: master
+      server:
+        git:
+          uri: https://github.com/sevenlittlefish/SpringCloudConfigProp.git
+          search-paths: repo
+          force-pull: true

@@ -1,0 +1,12 @@
+server:
+  port: 8761
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+#      集群配置
+#      defaultZone: http://localhost:8762/eureka/,http://localhost:8763/eureka/
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+  instance:
+    hostname: 127.0.0.1

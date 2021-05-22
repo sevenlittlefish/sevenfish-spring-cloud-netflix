@@ -1,0 +1,47 @@
+server:
+  port: 8821
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:8761/eureka/
+  instance:
+    prefer-ip-address: true
+spring:
+  application:
+    name: zuul-server
+zuul:
+  #路径前缀
+  prefix: /api
+  #排除serviceId实例名，不可通过实例名访问应用，多个用逗号隔开
+  ignored-services: "*"
+  #路由方式
+  routes:
+    provider-demo:
+      path: /providerDemo/**
+      serviceId: provider-demo-service
+    provider-account:
+      path: /providerAccount/**
+      serviceId: provider-account-service
+    provider-storage:
+      path: /providerStorage/**
+      serviceId: provider-storage-service
+    provider-order:
+      path: /providerOrder/**
+      serviceId: provider-order-service
+    consumer-demo:
+      path: /consumerDemo/**
+      serviceId: consumer-demo
+    consumer-business:
+      path: /consumerBusiness/**
+      serviceId: consumer-business
+#  thread-pool:
+#    use-separate-thread-pools: true
+#    thread-pool-key-prefix: zuulgw
+#hystrix:
+#  command:
+#    #serviceId实例名，default表示默认所有
+#    default:
+#      execution:
+#        isolation:
+#          thread:
+#            timeoutInMilliseconds: 4000

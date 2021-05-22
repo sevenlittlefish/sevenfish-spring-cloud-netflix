@@ -1,0 +1,16 @@
+server:
+  port: 8827
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka/
+  instance:
+    prefer-ip-address: true
+spring:
+  application:
+    name: turbine
+turbine:
+  aggregator:
+    cluster-config: default
+  app-config: consumer-demo #监控的服务名，多个逗号隔开
+  cluster-name-expression: "'default'"

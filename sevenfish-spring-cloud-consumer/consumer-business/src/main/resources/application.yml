@@ -1,0 +1,26 @@
+server:
+  port: 8812
+spring:
+  application:
+    name: consumer-business
+  zipkin:
+    base-url: http://127.0.0.1:9411
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    alibaba:
+      seata:
+        tx-service-group: my_test_tx_group
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka/
+  instance:
+    prefer-ip-address: true
+feign:
+  hystrix:
+    enabled: true
+logging:
+  level:
+    io:
+      seata: info

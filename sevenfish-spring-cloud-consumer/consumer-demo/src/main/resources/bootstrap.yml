@@ -1,0 +1,35 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka/
+  instance:
+    prefer-ip-address: true
+spring:
+  cloud:
+    #SpringCloudConfig注意事项：
+    #git上的文件名是否跟当前微服务的名称一致，
+    #例如当前微服务在注册中心配置的名称为consumer-demo,
+    #你的git上的配置文件只能是consumer-demo/consumer-demo-dev(prod).properties
+    #或者consumer-demo/consumer-demo-dev(prod).yml，不能为其他名字，
+    #否则配置内容注入失败
+    config:
+      label: master
+      profile: dev
+      discovery:
+        enabled:  true
+        serviceId: config-server
+    bus:
+      enabled: true
+      trace:
+        enabled: true
+  kafka:
+    bootstrap-servers: 127.0.0.1:9092
+    producer:
+      acks: 1
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: consumer-demo
