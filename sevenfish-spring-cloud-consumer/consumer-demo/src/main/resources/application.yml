@@ -16,3 +16,20 @@ management:
 feign:
   hystrix:
     enabled: true
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          ##隔离策略：1.THREAD（线程池，默认）2.SEMAPHORE（信号量）
+          strategy: SEMAPHORE
+          thread:
+            timeoutInMilliseconds: 3000
+          ##信号量配置
+          semaphore:
+            maxConcurrentRequests: 5
+  ##线程池配置
+  threadpool:
+    default:
+      coreSize: 10
+      maxQueueSize: 20

@@ -7,7 +7,7 @@ import com.netflix.zuul.exception.ZuulException;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.stereotype.Component;
 
-//@Component
+@Component
 public class CurrentLimitingFilter extends ZuulFilter {
 
     //定义一个令牌桶，每秒产生若干个令牌，即每秒最多处理若干个请求
