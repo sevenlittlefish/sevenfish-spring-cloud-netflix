@@ -1,11 +1,13 @@
 server:
   port: 8806
+
 eureka:
   client:
     service-url:
       defaultZone: http://127.0.0.1:8761/eureka/
   instance:
     prefer-ip-address: true
+
 spring:
   application:
     name: provider-demo-service
@@ -20,3 +22,13 @@ spring:
       url: jdbc:mysql://127.0.0.1:3306/test_account?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
       username: root
       password: root
+
+enhance:
+  thread:
+    pool:
+      prefix-thread-name: provider-demo-thread-
+      core-pool-size: 4
+      maximum-pool-size: 16
+      queue-size: 20
+      keep-alive-time: 120
+

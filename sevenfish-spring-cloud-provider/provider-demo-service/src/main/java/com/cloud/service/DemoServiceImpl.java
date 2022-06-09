@@ -7,24 +7,33 @@ import com.cloud.entity.User;
 import com.cloud.pojo.Product;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.concurrent.ThreadPoolExecutor;
 
 @Service
 public class DemoServiceImpl implements DemoService {
+
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Value("${server.port}")
     private String port;
 
     @Autowired
     private UserDao userDao;
+
+    @Resource
+    private ThreadPoolExecutor enhanceExecutor;
 
     @HystrixCommand(
             fallbackMethod = "fallbackListProducts",
@@ -48,6 +57,16 @@ public class DemoServiceImpl implements DemoService {
         list.add(new Product(1,"Product a from port:"+port, BigDecimal.ZERO));
         list.add(new Product(2,"Product b from port:"+port, BigDecimal.ONE));
         list.add(new Product(3,"Product c from port:"+port, BigDecimal.TEN));
+
+        enhanceExecutor.execute(()->{
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            log.info("test enhance thread pool,thread name is:"+Thread.currentThread().getName());
+        });
+
         return list;
     }
 

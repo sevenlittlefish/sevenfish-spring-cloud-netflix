@@ -16,6 +16,7 @@
         <module>sevenfish-spring-cloud-zuul</module>
         <module>sevenfish-spring-cloud-hystrix-dashboard</module>
         <module>sevenfish-spring-cloud-turbine</module>
+        <module>sevenfish-spring-cloud-starter</module>
     </modules>
 
     <packaging>pom</packaging>
