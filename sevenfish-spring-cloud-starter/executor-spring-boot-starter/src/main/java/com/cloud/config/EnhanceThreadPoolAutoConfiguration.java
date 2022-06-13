@@ -23,7 +23,7 @@ public class EnhanceThreadPoolAutoConfiguration {
     @Bean
     public ThreadPoolExecutor enhanceExecutor() {
         return new EnhanceThreadPoolExecutor(
-                null,
+                enhanceThreadPoolProperties.getThreadPoolName(),
                 enhanceThreadPoolProperties.getCorePoolSize(),
                 enhanceThreadPoolProperties.getMaximumPoolSize(),
                 enhanceThreadPoolProperties.getKeepAliveTime(),

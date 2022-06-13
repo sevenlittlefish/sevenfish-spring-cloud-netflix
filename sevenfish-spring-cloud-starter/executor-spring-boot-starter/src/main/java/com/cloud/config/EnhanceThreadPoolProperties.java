@@ -7,11 +7,12 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "enhance.thread.pool")
 public class EnhanceThreadPoolProperties {
 
-    public int corePoolSize = 8;
-    public int maximumPoolSize = 100;
-    public int keepAliveTime = 60;
-    public int queueSize = 100;
-    public String prefixThreadName = "default-thread-";
+    private int corePoolSize = 8;
+    private int maximumPoolSize = 100;
+    private int keepAliveTime = 60;
+    private int queueSize = 100;
+    private String prefixThreadName = "default-thread-";
+    private String threadPoolName = "enhance-thread-pool";
 
     public int getCorePoolSize() {
         return corePoolSize;
@@ -51,5 +52,13 @@ public class EnhanceThreadPoolProperties {
 
     public void setPrefixThreadName(String prefixThreadName) {
         this.prefixThreadName = prefixThreadName;
+    }
+
+    public String getThreadPoolName() {
+        return threadPoolName;
+    }
+
+    public void setThreadPoolName(String threadPoolName) {
+        this.threadPoolName = threadPoolName;
     }
 }

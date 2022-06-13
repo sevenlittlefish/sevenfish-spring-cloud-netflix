@@ -26,9 +26,10 @@ spring:
 enhance:
   thread:
     pool:
+      core-pool-size: 8
+      maximum-pool-size: 100
+      queue-size: 1000
+      keep-alive-time: 60
       prefix-thread-name: provider-demo-thread-
-      core-pool-size: 4
-      maximum-pool-size: 16
-      queue-size: 20
-      keep-alive-time: 120
+      thread-pool-name: defualt-enhance-thread-pool
 

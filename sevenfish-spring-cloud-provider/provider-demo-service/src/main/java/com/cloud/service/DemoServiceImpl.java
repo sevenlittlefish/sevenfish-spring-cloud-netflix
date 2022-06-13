@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.ThreadPoolExecutor;
 
 @Service
@@ -60,11 +61,10 @@ public class DemoServiceImpl implements DemoService {
 
         enhanceExecutor.execute(()->{
             try {
-                Thread.sleep(500);
+                Thread.sleep(ThreadLocalRandom.current().nextInt(300,500));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            log.info("test enhance thread pool,thread name is:"+Thread.currentThread().getName());
         });
 
         return list;

@@ -7,7 +7,6 @@ import com.dianping.cat.status.StatusExtension;
 import com.dianping.cat.status.StatusExtensionRegister;
 import org.slf4j.MDC;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.*;
@@ -15,30 +14,30 @@ import java.util.concurrent.*;
 public class EnhanceThreadPoolExecutor extends ThreadPoolExecutor {
 
     private String threadPoolName = "enhance-thread-pool";
-    private final Map<String, Transaction> txMap = new HashMap<>();
+    private final Map<String, Transaction> txMap = new ConcurrentHashMap<>();
 
     public EnhanceThreadPoolExecutor(String threadPoolName, int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue) {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
         if (threadPoolName != null && !threadPoolName.isEmpty()) this.threadPoolName = threadPoolName;
-        registerTask();
+        registerStatusExtension();
     }
 
     public EnhanceThreadPoolExecutor(String threadPoolName, int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory) {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory);
         if (threadPoolName != null && !threadPoolName.isEmpty()) this.threadPoolName = threadPoolName;
-        registerTask();
+        registerStatusExtension();
     }
 
     public EnhanceThreadPoolExecutor(String threadPoolName, int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, RejectedExecutionHandler handler) {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, handler);
         if (threadPoolName != null && !threadPoolName.isEmpty()) this.threadPoolName = threadPoolName;
-        registerTask();
+        registerStatusExtension();
     }
 
     public EnhanceThreadPoolExecutor(String threadPoolName, int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory, RejectedExecutionHandler handler) {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
         if (threadPoolName != null && !threadPoolName.isEmpty()) this.threadPoolName = threadPoolName;
-        registerTask();
+        registerStatusExtension();
     }
 
     @Override
@@ -107,7 +106,7 @@ public class EnhanceThreadPoolExecutor extends ThreadPoolExecutor {
     @Override
     protected void beforeExecute(Thread t, Runnable r) {
         String threadName = Thread.currentThread().getName();
-        Transaction transaction = Cat.newTransaction(threadName, r.getClass().getName());
+        Transaction transaction = Cat.newTransaction(threadPoolName, threadPoolName);
         txMap.put(threadName, transaction);
         super.beforeExecute(t, r);
     }
@@ -126,19 +125,6 @@ public class EnhanceThreadPoolExecutor extends ThreadPoolExecutor {
         txMap.remove(threadName);
     }
 
-    private void registerTask() {
-        new Thread(() -> {
-            while (true) {
-                try {
-                    Thread.sleep(50);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                registerStatusExtension();
-            }
-        }).start();
-    }
-
     public void registerStatusExtension() {
         ThreadPoolExecutor executor = this;
         StatusExtension extension = new StatusExtension() {
@@ -149,7 +135,7 @@ public class EnhanceThreadPoolExecutor extends ThreadPoolExecutor {
 
             @Override
             public String getDescription() {
-                return threadPoolName;
+                return "Thread pool monitoring";
             }
 
             @Override
